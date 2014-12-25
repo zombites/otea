@@ -24,7 +24,9 @@ class UserController extends Controller
 		
 		$user = $this->container->get('fos_user.user_manager')->createUser();
 		
-		$form = $this->createForm(new RegistrationFormType(), $user);
+		$provincias = $this->obtenerSelectProvincias();
+
+		$form = $this->createForm(new RegistrationFormType(), $user)->add('localidad', 'choice', array('choices' => $provincias));
 		
         $users = $this->container->get('fos_user.user_manager')->findUsers();
 
@@ -96,8 +98,6 @@ class UserController extends Controller
 		}
 		elseif ('POST' === $request->getMethod()) 
 		{
-			
-			/* TODO: Edición de usuarios */
 
 			$user = $this->container->get('fos_user.user_manager')->findUserByUsername($request->get('zombit_user_profile')['username']);
 			//$user = $this->container->get('fos_user.user_manager')->createUser();
@@ -116,5 +116,24 @@ class UserController extends Controller
 		
 		return $this->redirect($url);
     }
+
+	private function obtenerSelectProvincias()
+	{
+		$em = $this->getDoctrine()->getManager();
+		$provincias = $em->createQuery('SELECT p.id, p.name FROM ZombitOteaBundle:Provincia p ORDER BY p.name ASC')->getResult();
+		
+		$lista = array();
+		
+		foreach ($provincias as $provincia) {
+			$em = $this->getDoctrine()->getManager();
+			$localidades = $em->createQuery('SELECT l.id, l.name, p.id as prov FROM ZombitOteaBundle:Localidad l JOIN l.provincia p WHERE p.id = :n ORDER BY l.name ASC')->setParameter('n', $provincia['id'])->getResult();
+			
+			foreach($localidades as $localidad)
+				$lista[$provincia['name']][$localidad['id']] = $localidad['name'];
+				
+		}
+		
+		return $lista;
+	}
 		
 }

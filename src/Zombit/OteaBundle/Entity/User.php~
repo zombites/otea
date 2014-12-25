@@ -67,4 +67,27 @@ class User extends BaseUser
      * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
      */
     protected $localidad;
+
+    /**
+     * Set localidad
+     *
+     * @param \Zombit\OteaBundle\Entity\Localidad $localidad
+     * @return User
+     */
+    public function setLocalidad(\Zombit\OteaBundle\Entity\Localidad $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \Zombit\OteaBundle\Entity\Localidad 
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
+    }
 }

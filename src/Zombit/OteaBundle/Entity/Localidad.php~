@@ -130,4 +130,37 @@ class Localidad
     {
         $this->users = new ArrayCollection();
     }
+
+    /**
+     * Add users
+     *
+     * @param \Zombit\OteaBundle\Entity\User $users
+     * @return Localidad
+     */
+    public function addUser(\Zombit\OteaBundle\Entity\User $users)
+    {
+        $this->users[] = $users;
+
+        return $this;
+    }
+
+    /**
+     * Remove users
+     *
+     * @param \Zombit\OteaBundle\Entity\User $users
+     */
+    public function removeUser(\Zombit\OteaBundle\Entity\User $users)
+    {
+        $this->users->removeElement($users);
+    }
+
+    /**
+     * Get users
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
 }

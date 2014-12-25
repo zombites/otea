@@ -163,4 +163,5 @@ class Localidad
     {
         return $this->users;
     }
+	
 }
