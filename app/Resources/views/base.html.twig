@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <meta charset="{{ _charset }}" />
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% endblock %} | Otea</title>
+
+    <!-- Latest compiled and minified CSS -->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+    <link href="{{ asset('bundles/public/css/bootstrap-switch.min.css', absolute=true) }}" rel="stylesheet">
+
+	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+
+    <!-- Custom styles for this template -->
+    <link href="{{ asset('bundles/public/css/dashboard.css', absolute=true) }}" rel="stylesheet">
+
+    {% block head %}{% endblock %}
+
+  </head>
+
+  <body>
+
+    {% include 'navsup.html.twig' %}
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-xs-1 col-sm-3 col-md-2 sidebar">
+          {% include 'navlat.html.twig' %}
+        </div>
+        <div class="col-xs-11 col-xs-offset-1 col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+          <h1 class="page-header">{% block namepage %}{% endblock %}</h1>
+          {% block body %}{% endblock %}
+          {% block fos_user_content %}{% endblock fos_user_content %}
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->  
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    
+    <script src="{{ asset('bundles/public/js/bootstrap-confirmation.min.js', absolute=true) }}"></script>
+    <script src="{{ asset('bundles/public/js/bootstrap-switch.min.js', absolute=true) }}"></script>
+
+    <script type="text/javascript">
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="confirmation"]').confirmation();
+        $.fn.bootstrapSwitch.defaults.size = 'mini';
+		$.fn.bootstrapSwitch.defaults.onColor = 'success';
+		$.fn.bootstrapSwitch.defaults.onText = 'Sí';
+		$.fn.bootstrapSwitch.defaults.offText = 'No';
+        $('[data-toggle="checkbox"]').bootstrapSwitch();
+      })
+    </script>
+
+    {% block script %}{% endblock %}
+    
+  </body>
+</html>
+

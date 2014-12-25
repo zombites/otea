@@ -1,0 +1,27 @@
+zombit_otea_homepage:
+    path:     /
+    defaults: { _controller: FOSUserBundle:Security:login }
+
+zombit_otea_dashboardpage:
+    path:     /dashboard
+    defaults: { _controller: ZombitOteaBundle:Default:dashboard }
+
+zombit_otea_searchpage:
+    path:     /search
+    defaults: { _controller: ZombitOteaBundle:Default:search }
+
+zombit_otea_userspage:
+    path:     /users
+    defaults: { _controller: ZombitOteaBundle:User:list }
+    
+zombit_otea_adduserpage:
+    path:     /users/add
+    defaults: { _controller: ZombitOteaBundle:User:add }
+    
+zombit_otea_edituserpage:
+    path:     /users/edit/{username}
+    defaults: { _controller: ZombitOteaBundle:User:edit, username: ''}
+    
+zombit_otea_deluserpage:
+    path:     /users/del/{username}
+    defaults: { _controller: ZombitOteaBundle:User:del }

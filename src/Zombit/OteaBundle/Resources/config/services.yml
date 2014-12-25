@@ -1,0 +1,12 @@
+services:
+#    zombit_otea.example:
+#        class: Zombit\OteaBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]
+    zombit_user.registration.form.type:
+        class: Zombit\OteaBundle\Form\Type\RegistrationFormType
+        tags:
+            - { name: form.type, alias: zombit_user_registration }
+    zombit_user.profile.form.type:
+        class: Zombit\OteaBundle\Form\Type\ProfileFormType
+        tags:
+            - { name: form.type, alias: zombit_user_profile }

@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Usuarias/os{% endblock %}
+
+{% block namepage %}Usuarias/os <button class="btn btn-success pull-right" data-toggle="modal" data-target="#addModal" data-toogle="tooltip" data-placement="left" title="Añadir usuaria/o"><span class="glyphicon glyphicon-plus"></span></button>{% endblock %}
+{% block body %}
+<!--a href="{{ path( 'zombit_otea_adduserpage' ) }}"-->
+<table class="table table-hover">
+	<thead>
+		<tr>
+			<th></th>
+			<th>Nombre</th>
+			<th>Correo</th>
+			<th>Último acceso</th>
+			<th>Activo</th>
+			<th>Acciones</th>
+		</tr>
+	</thead>
+	<tbody>
+    {% for user in users %}
+    	<tr>
+    		<td>{% if user.roles[0] == 'ROLE_ADMIN' %}<span class="glyphicon glyphicon-asterisk text-danger" data-toggle="tooltip" data-placement="right" data-container="body" title="Admin"></span>{% endif %}</td>
+        	<td>{{ user.name | e }}</td>
+        	<td>{{ user.email }}</td>
+        	<td>{{ user.lastlogin | date }}</td>
+    		<td><input type="checkbox" data-toggle="checkbox" {% if user.enabled %}checked{% endif %} />
+    		</td>
+        	<td>
+        		<!--a href="{{ path( 'zombit_otea_edituserpage', { 'username': user.username }) }}" data-toggle="confirmation" data-title="¿Convertir en Admin?" data-placement="right" data-singleton="true" data-btn-ok-label="Sí" data-btn-ok-class="btn-danger" data-btn-cancel-class="btn-primary"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-asterisk"></span></button></a-->
+        		<button class="btn btn-primary btn-xs" data-toggle="modal" data-target="#editModal" onclick="fillFormEdit('{{ user.username }}');"><span class="glyphicon glyphicon-pencil"></span></button>
+        		<a href="{{ path( 'zombit_otea_deluserpage', { 'username': user.username }) }}" data-toggle="confirmation" data-title="¿Eliminar usuaria/o?" data-placement="right" data-singleton="true" data-btn-ok-label="Sí" data-btn-ok-class="btn-danger" data-btn-cancel-class="btn-default"><button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button></a>
+        	</td>
+        </tr>
+    {% endfor %}
+</tbody>
+</table>
+
+<!-- add Modal -->
+<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Alta de usuaria/o</h4>
+      </div>
+  	<form action="{{ path('zombit_otea_adduserpage') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register form-horizontal">
+      <div class="modal-body">
+    	{% include 'ZombitOteaBundle:User:add.html.twig' %}
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+
+<!-- edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edición de usuaria/o</h4>
+      </div>
+  	<form action="{{ path('zombit_otea_edituserpage') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register form-horizontal">
+      <div class="modal-body" id="editFormModal">    	
+      </div>
+      <div class="modal-footer">
+      	<!--input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" /-->
+        <button type="submit" class="btn btn-primary">Aceptar</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+      </div>
+	</form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+{% block script %}
+    <script type="text/javascript">
+		function fillFormEdit(user)
+		{
+			$.get( "{{ path( 'zombit_otea_edituserpage') }}/" + user )
+				.done(function( form ) {
+					$( "#editFormModal" ).html( form );
+				});
+		}
+    </script>
+{% endblock %}
