@@ -17,9 +17,16 @@ class Localidad
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\GeneratedValue
      */
     private $id;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="code", type="integer")
+     */
+    private $code;
 
     /**
      * @var string
@@ -89,5 +96,38 @@ class Localidad
     public function getProvincia()
     {
         return $this->provincia;
+    }
+
+    /**
+     * Set code
+     *
+     * @param integer $code
+     * @return Localidad
+     */
+    public function setCode($code)
+    {
+        $this->code = $code;
+
+        return $this;
+    }
+
+    /**
+     * Get code
+     *
+     * @return integer 
+     */
+    public function getCode()
+    {
+        return $this->code;
+    }
+	
+	/**
+     * @ORM\OneToMany(targetEntity="User", mappedBy="localidad")
+     */
+    protected $users;
+ 
+    public function __construct()
+    {
+        $this->users = new ArrayCollection();
     }
 }

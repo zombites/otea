@@ -61,4 +61,14 @@ class Provincia
     {
         return $this->name;
     }
+	
+	/**
+     * @ORM\OneToMany(targetEntity="Localidad", mappedBy="provincia")
+     */
+    protected $provincias;
+ 
+    public function __construct()
+    {
+        $this->provincias = new ArrayCollection();
+    }
 }

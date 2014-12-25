@@ -61,4 +61,47 @@ class Provincia
     {
         return $this->name;
     }
+	
+	/**
+     * @ORM\OneToMany(targetEntity="Localidad", mappedBy="provincia")
+     */
+    protected $provincias;
+ 
+    public function __construct()
+    {
+        $this->provincias = new ArrayCollection();
+    }
+
+    /**
+     * Add provincias
+     *
+     * @param \Zombit\OteaBundle\Entity\Localidad $provincias
+     * @return Provincia
+     */
+    public function addProvincia(\Zombit\OteaBundle\Entity\Localidad $provincias)
+    {
+        $this->provincias[] = $provincias;
+
+        return $this;
+    }
+
+    /**
+     * Remove provincias
+     *
+     * @param \Zombit\OteaBundle\Entity\Localidad $provincias
+     */
+    public function removeProvincia(\Zombit\OteaBundle\Entity\Localidad $provincias)
+    {
+        $this->provincias->removeElement($provincias);
+    }
+
+    /**
+     * Get provincias
+     *
+     * @return \Doctrine\Common\Collections\Collection 
+     */
+    public function getProvincias()
+    {
+        return $this->provincias;
+    }
 }

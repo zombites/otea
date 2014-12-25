@@ -61,4 +61,33 @@ class User extends BaseUser
     {
         return $this->id;
     }
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="Localidad", inversedBy="users")
+     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
+     */
+    protected $localidad;
+
+    /**
+     * Set localidad
+     *
+     * @param \Zombit\OteaBundle\Entity\Localidad $localidad
+     * @return User
+     */
+    public function setLocalidad(\Zombit\OteaBundle\Entity\Localidad $localidad = null)
+    {
+        $this->localidad = $localidad;
+
+        return $this;
+    }
+
+    /**
+     * Get localidad
+     *
+     * @return \Zombit\OteaBundle\Entity\Localidad 
+     */
+    public function getLocalidad()
+    {
+        return $this->localidad;
+    }
 }

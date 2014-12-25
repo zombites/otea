@@ -51,4 +51,20 @@ class User extends BaseUser
         parent::__construct();
         // your own logic
     }
+
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="Localidad", inversedBy="users")
+     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
+     */
+    protected $localidad;
 }
