@@ -2,152 +2,223 @@
 
 namespace Zombit\OteaBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\ExpressionLanguage\Expression;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use FOS\UserBundle\Model\UserManagerInterface;
+use Zombit\OteaBundle\Entity\User;
+use Zombit\OteaBundle\Form\UserType;
 
-use Zombit\OteaBundle\Form\Type\RegistrationFormType;
-use Zombit\OteaBundle\Form\Type\ProfileFormType;
-
-use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
-use Symfony\Component\Validator\Constraints\Choice;
-
+/**
+ * User controller.
+ *
+ */
 class UserController extends Controller
 {
-    public function listAction()
+
+    /**
+     * Lists all User entities.
+     *
+     */
+    public function indexAction()
     {
-    	if (!$this->get('security.context')->isGranted(new Expression('"ROLE_ADMIN" in roles or (user and user.isSuperAdmin())')))
-		{
-	        throw new AccessDeniedException();
-	    }
-		
-		$user = $this->container->get('fos_user.user_manager')->createUser();
-		
-		$provincias = $this->obtenerSelectProvincias();
+        $em = $this->getDoctrine()->getManager();
 
-		$form = $this->createForm(new RegistrationFormType(), $user); //->add('localidad', 'choice', array('choices' => $provincias));
-		
-        $users = $this->container->get('fos_user.user_manager')->findUsers();
+        $entities = $em->getRepository('ZombitOteaBundle:User')->findAll();
 
-        return $this->render('ZombitOteaBundle:User:users.html.twig', array('users' => $users, 'form' => $form->createView(), 'active' => 2));
+        return $this->render('ZombitOteaBundle:User:index.html.twig', array(
+            'entities' => $entities,
+        ));
     }
-	
-	public function delAction($username)
-	{
-    	if (!$this->get('security.context')->isGranted(new Expression('"ROLE_ADMIN" in roles or (user and user.isSuperAdmin())')))
-		{
-	        throw new AccessDeniedException();
-	    }
-		
-		$user = $this->container->get('fos_user.user_manager')->findUserByUsername($username);
-		
-		$this->container->get('fos_user.user_manager')->deleteUser($user);
-		
-		$users = $this->container->get('fos_user.user_manager')->findUsers();
-		
-		$route = 'zombit_otea_userspage';
-		$url = $this->generateUrl($route);
-		
-		return $this->redirect($url);
-		
-	}
-	
-    public function addAction(Request $request)
-	{
-    	if (!$this->get('security.context')->isGranted(new Expression('"ROLE_ADMIN" in roles or (user and user.isSuperAdmin())')))
-		{
-	        throw new AccessDeniedException();
-	    }
-		
-		if ('POST' === $request->getMethod()) {
-			
-			$user = $this->container->get('fos_user.user_manager')->createUser();
-			$form = $this->createForm(new RegistrationFormType(), $user);
-			
-            $form->handleRequest($request);
+    /**
+     * Creates a new User entity.
+     *
+     */
+    public function createAction(Request $request)
+    {
+        $entity = new User();
+        $form = $this->createCreateForm($entity);
+        $form->handleRequest($request);
 
-            if ($form->isValid()) {
-            	//echo "nada";
-            	$user->setEnabled(true);
-				$this->container->get('fos_user.user_manager')->updateUser($user);
-            }
-			
-			//return $this->render('ZombitOteaBundle:User:add.html.twig', array('form' => $form->createView(), 'active' => 2));
-			
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($entity);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('users_show', array('id' => $entity->getId())));
         }
-		
-		/*else {
-			$provincias = $this->obtenerSelectProvincias();	
-			$user = $this->container->get('fos_user.user_manager')->createUser();
-			$form = $this->createForm(new RegistrationFormType(), $user)->add('localidad', 'choice', array('choices' => $provincias));
-			//$form->get('localidad')->setData($provincias);
-			return $this->render('ZombitOteaBundle:User:add.html.twig', array('form' => $form->createView(), 'active' => 2));
-		}*/		
-		
-		$route = 'zombit_otea_userspage';
-		$url = $this->generateUrl($route);
-		
-		return $this->redirect($url);
+
+        return $this->render('ZombitOteaBundle:User:new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ));
     }
-	
-	public function editAction($username = false, Request $request)
-	{
-    	if (!$this->get('security.context')->isGranted(new Expression('"ROLE_ADMIN" in roles or (user and user.isSuperAdmin())')))
-		{
-	        throw new AccessDeniedException();
-	    }
-		
-		if ('GET' === $request->getMethod()) // Se usa GET para cargar el formulario de edición mediante jquery
-		{
 
-			$user = $this->container->get('fos_user.user_manager')->findUserByUsername($username);
-			$form = $this->createForm(new ProfileFormType(), $user);
-			return $this->render('ZombitOteaBundle:User:edit.html.twig', array('form' => $form->createView(), 'active' => 2));
-			
-		}
-		elseif ('POST' === $request->getMethod()) 
-		{
+    /**
+     * Creates a form to create a User entity.
+     *
+     * @param User $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createCreateForm(User $entity)
+    {
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action' => $this->generateUrl('users_create'),
+            'method' => 'POST',
+        ));
 
-			$user = $this->container->get('fos_user.user_manager')->findUserByUsername($request->get('zombit_user_profile')['username']);
-			//$user = $this->container->get('fos_user.user_manager')->createUser();
-			$form = $this->createForm(new ProfileFormType(), $user);
+        $form->add('submit', 'submit', array('label' => 'Create'));
 
-            $form->handleRequest($request);
+        return $form;
+    }
 
-            if ($form->isValid()) {
-				$this->container->get('fos_user.user_manager')->updateUser($user);
-				//$this->container->get('fos_user.user_manager')->reloadUser($user);
+    /**
+     * Displays a form to create a new User entity.
+     *
+     */
+    public function newAction()
+    {
+        $entity = new User();
+        $form   = $this->createCreateForm($entity);
+
+        return $this->render('ZombitOteaBundle:User:new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView(),
+        ));
+    }
+
+    /**
+     * Finds and displays a User entity.
+     *
+     */
+    public function showAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ZombitOteaBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('ZombitOteaBundle:User:show.html.twig', array(
+            'entity'      => $entity,
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+     * Displays a form to edit an existing User entity.
+     *
+     */
+    public function editAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ZombitOteaBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $editForm = $this->createEditForm($entity);
+        $deleteForm = $this->createDeleteForm($id);
+
+        return $this->render('ZombitOteaBundle:User:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+
+    /**
+    * Creates a form to edit a User entity.
+    *
+    * @param User $entity The entity
+    *
+    * @return \Symfony\Component\Form\Form The form
+    */
+    private function createEditForm(User $entity)
+    {
+        $form = $this->createForm(new UserType(), $entity, array(
+            'action' => $this->generateUrl('users_update', array('id' => $entity->getId())),
+            'method' => 'PUT',
+        ));
+
+        $form->add('submit', 'submit', array('label' => 'Update'));
+
+        return $form;
+    }
+    /**
+     * Edits an existing User entity.
+     *
+     */
+    public function updateAction(Request $request, $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $entity = $em->getRepository('ZombitOteaBundle:User')->find($id);
+
+        if (!$entity) {
+            throw $this->createNotFoundException('Unable to find User entity.');
+        }
+
+        $deleteForm = $this->createDeleteForm($id);
+        $editForm = $this->createEditForm($entity);
+        $editForm->handleRequest($request);
+
+        if ($editForm->isValid()) {
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('users_edit', array('id' => $id)));
+        }
+
+        return $this->render('ZombitOteaBundle:User:edit.html.twig', array(
+            'entity'      => $entity,
+            'edit_form'   => $editForm->createView(),
+            'delete_form' => $deleteForm->createView(),
+        ));
+    }
+    /**
+     * Deletes a User entity.
+     *
+     */
+    public function deleteAction(Request $request, $id)
+    {
+        $form = $this->createDeleteForm($id);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $entity = $em->getRepository('ZombitOteaBundle:User')->find($id);
+
+            if (!$entity) {
+                throw $this->createNotFoundException('Unable to find User entity.');
             }
-        }		
-		
-		$route = 'zombit_otea_userspage';
-		$url = $this->generateUrl($route);
-		
-		return $this->redirect($url);
+
+            $em->remove($entity);
+            $em->flush();
+        }
+
+        return $this->redirect($this->generateUrl('users'));
     }
 
-	private function obtenerSelectProvincias()
-	{
-		$em = $this->getDoctrine()->getManager();
-		$provincias = $em->createQuery('SELECT p.id, p.name FROM ZombitOteaBundle:Provincia p ORDER BY p.name ASC')->getResult();
-		
-		$lista = array();
-		
-		foreach ($provincias as $provincia) {
-			$em = $this->getDoctrine()->getManager();
-			$localidades = $em->createQuery('SELECT l.id, l.name, p.id as prov FROM ZombitOteaBundle:Localidad l JOIN l.provincia p WHERE p.id = :n ORDER BY l.name ASC')->setParameter('n', $provincia['id'])->getResult();
-			
-			foreach($localidades as $localidad)
-				$lista[$provincia['name']][$localidad['id']] = $localidad['name'];
-				
-			break; // TODO quitar el break para que cargue todas las provincias, o generar la carga dinámica.
-		}
-		
-		return $lista;
-	}
-		
+    /**
+     * Creates a form to delete a User entity by id.
+     *
+     * @param mixed $id The entity id
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
+    private function createDeleteForm($id)
+    {
+        return $this->createFormBuilder()
+            ->setAction($this->generateUrl('users_delete', array('id' => $id)))
+            ->setMethod('DELETE')
+            ->add('submit', 'submit', array('label' => 'Delete'))
+            ->getForm()
+        ;
+    }
 }

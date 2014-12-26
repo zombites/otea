@@ -1,9 +1,9 @@
           <ul class="nav nav-sidebar">
             <li {{ active is defined ? (active == 0 ? 'class="active"' : false) : false }}><a href="{{ path( 'zombit_otea_dashboardpage' ) }}"><span class="glyphicon glyphicon-dashboard" data-toggle="tooltip" data-placement="right" data-container="body" title="Portada"></span> <span class="hidden-xs">Portada</span></a></li>
-            <li {{ active is defined ? (active == 1 ? 'class="active"' : false) : false }}><a href="{{ path( 'zombit_otea_searchpage' ) }}"><span class="glyphicon glyphicon-search"></span> <span class="hidden-xs">Buscador <span class="badge pull-right">4</span></span></a></li>
             {% if is_granted('ROLE_ADMIN') %}
-    		<li {{ active is defined ? (active == 2 ? 'class="active"' : false) : false }}><a href="{{ path( 'zombit_otea_userspage' ) }}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-xs">Usuarias/os</span></a></li>
+    		<li {{ active is defined ? (active == 2 ? 'class="active"' : false) : false }}><a href="{{ path( 'users' ) }}"><span class="glyphicon glyphicon-user"></span> <span class="hidden-xs">Usuarias/os</span></a></li>
 			{% endif %}
+            <li {{ active is defined ? (active == 1 ? 'class="active"' : false) : false }}><a href="{{ path( 'zombit_otea_searchpage' ) }}"><span class="glyphicon glyphicon-search"></span> <span class="hidden-xs">Buscador <span class="badge pull-right">4</span></span></a></li>
             <li><a href="#"><span class="glyphicon glyphicon-comment"></span> <span class="hidden-xs">Mensajes</span></a></li>
             <li><a href="#"><span class="glyphicon glyphicon-eye-open"></span> <span class="hidden-xs">Peticiones</span></a></li>
           </ul>

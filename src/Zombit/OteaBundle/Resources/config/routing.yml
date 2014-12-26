@@ -1,10 +1,6 @@
-zombit_otea_localidad:
-    resource: "@ZombitOteaBundle/Resources/config/routing/localidad.yml"
-    prefix:   /localidad
-
-zombit_otea_provincia:
-    resource: "@ZombitOteaBundle/Resources/config/routing/provincia.yml"
-    prefix:   /provincia
+zombit_otea_userspage:
+    resource: "@ZombitOteaBundle/Resources/config/routing/user.yml"
+    prefix:   /users
 
 zombit_otea_homepage:
     path:     /
@@ -17,19 +13,3 @@ zombit_otea_dashboardpage:
 zombit_otea_searchpage:
     path:     /search
     defaults: { _controller: ZombitOteaBundle:Default:search }
-
-zombit_otea_userspage:
-    path:     /users
-    defaults: { _controller: ZombitOteaBundle:User:list }
-    
-zombit_otea_adduserpage:
-    path:     /users/add
-    defaults: { _controller: ZombitOteaBundle:User:add }
-    
-zombit_otea_edituserpage:
-    path:     /users/edit/{username}
-    defaults: { _controller: ZombitOteaBundle:User:edit, username: ''}
-    
-zombit_otea_deluserpage:
-    path:     /users/del/{username}
-    defaults: { _controller: ZombitOteaBundle:User:del }

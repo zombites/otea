@@ -2,13 +2,13 @@
 
 namespace Zombit\OteaBundle\Entity;
 
-use FOS\UserBundle\Entity\User as BaseUser;
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="fos_user")
+ * @ORM\Table(name="otea_user")
  */
 class User extends BaseUser
 {
@@ -33,18 +33,12 @@ class User extends BaseUser
      */
     protected $name;
 	
-    public function getName()
-    {
-        return $this->name;
-    }
+    /**
+     * @ORM\Column(type="string", length=1)
+     *
+     */
+    protected $gender = 'm';
 	
-	
-    public function setName($name)
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function __construct()
     {
@@ -61,33 +55,50 @@ class User extends BaseUser
     {
         return $this->id;
     }
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="Localidad", inversedBy="users")
-     * @ORM\JoinColumn(name="localidad_id", referencedColumnName="id")
-     */
-    protected $localidad;
 
     /**
-     * Set localidad
+     * Set name
      *
-     * @param \Zombit\OteaBundle\Entity\Localidad $localidad
+     * @param string $name
      * @return User
      */
-    public function setLocalidad(\Zombit\OteaBundle\Entity\Localidad $localidad = null)
+    public function setName($name)
     {
-        $this->localidad = $localidad;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get localidad
+     * Get name
      *
-     * @return \Zombit\OteaBundle\Entity\Localidad 
+     * @return string 
      */
-    public function getLocalidad()
+    public function getName()
     {
-        return $this->localidad;
+        return $this->name;
+    }
+
+    /**
+     * Set gender
+     *
+     * @param string $gender
+     * @return User
+     */
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
+
+        return $this;
+    }
+
+    /**
+     * Get gender
+     *
+     * @return string 
+     */
+    public function getGender()
+    {
+        return $this->gender;
     }
 }

@@ -9,9 +9,9 @@ class RegistrationFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	// add your custom field
+        // add your custom field
         $builder->add('name');
-		//$builder->add('localidad', 'choice', array('choices' => array(false)));
+		$builder->add('gender');
     }
 
     public function getParent()
