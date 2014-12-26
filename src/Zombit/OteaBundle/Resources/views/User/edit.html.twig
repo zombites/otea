@@ -21,6 +21,7 @@
 	    </div>
 	    {{ form_errors(form.email) }}   
 	</div>
+	{#
 	<select id="formSelect" class="populate">
 		<optgroup label="Alaskan/Hawaiian Time Zone">
         	<option value="AK">Alaska</option>
@@ -61,6 +62,7 @@
            <option value="WI">Wisconsin</option>
        </optgroup>
 	</select>
+	#}
 	<hr />
 	<div class="form-group">
 	    {{ form_label(form.current_password, 'Control', { 'label_attr': {'class': 'col-sm-2 control-label'} }) }}
