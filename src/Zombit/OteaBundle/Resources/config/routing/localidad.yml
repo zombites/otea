@@ -1,0 +1,30 @@
+localidad:
+    path:     /
+    defaults: { _controller: "ZombitOteaBundle:Localidad:index" }
+
+localidad_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZombitOteaBundle:Localidad:show" }
+
+localidad_new:
+    path:     /new
+    defaults: { _controller: "ZombitOteaBundle:Localidad:new" }
+
+localidad_create:
+    path:     /create
+    defaults: { _controller: "ZombitOteaBundle:Localidad:create" }
+    requirements: { _method: post }
+
+localidad_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZombitOteaBundle:Localidad:edit" }
+
+localidad_update:
+    path:     /{id}/update
+    defaults: { _controller: "ZombitOteaBundle:Localidad:update" }
+    requirements: { _method: post|put }
+
+localidad_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZombitOteaBundle:Localidad:delete" }
+    requirements: { _method: post|delete }

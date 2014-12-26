@@ -1,0 +1,30 @@
+provincia:
+    path:     /
+    defaults: { _controller: "ZombitOteaBundle:Provincia:index" }
+
+provincia_show:
+    path:     /{id}/show
+    defaults: { _controller: "ZombitOteaBundle:Provincia:show" }
+
+provincia_new:
+    path:     /new
+    defaults: { _controller: "ZombitOteaBundle:Provincia:new" }
+
+provincia_create:
+    path:     /create
+    defaults: { _controller: "ZombitOteaBundle:Provincia:create" }
+    requirements: { _method: post }
+
+provincia_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "ZombitOteaBundle:Provincia:edit" }
+
+provincia_update:
+    path:     /{id}/update
+    defaults: { _controller: "ZombitOteaBundle:Provincia:update" }
+    requirements: { _method: post|put }
+
+provincia_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "ZombitOteaBundle:Provincia:delete" }
+    requirements: { _method: post|delete }

@@ -13,6 +13,9 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use Zombit\OteaBundle\Form\Type\RegistrationFormType;
 use Zombit\OteaBundle\Form\Type\ProfileFormType;
 
+use Symfony\Component\Form\Extension\Core\ChoiceList\ChoiceList;
+use Symfony\Component\Validator\Constraints\Choice;
+
 class UserController extends Controller
 {
     public function listAction()
@@ -26,7 +29,7 @@ class UserController extends Controller
 		
 		$provincias = $this->obtenerSelectProvincias();
 
-		$form = $this->createForm(new RegistrationFormType(), $user)->add('localidad', 'choice', array('choices' => $provincias));
+		$form = $this->createForm(new RegistrationFormType(), $user); //->add('localidad', 'choice', array('choices' => $provincias));
 		
         $users = $this->container->get('fos_user.user_manager')->findUsers();
 
@@ -62,18 +65,28 @@ class UserController extends Controller
 		
 		if ('POST' === $request->getMethod()) {
 			
-		
 			$user = $this->container->get('fos_user.user_manager')->createUser();
 			$form = $this->createForm(new RegistrationFormType(), $user);
 			
             $form->handleRequest($request);
 
             if ($form->isValid()) {
+            	//echo "nada";
             	$user->setEnabled(true);
 				$this->container->get('fos_user.user_manager')->updateUser($user);
             }
 			
-        }		
+			//return $this->render('ZombitOteaBundle:User:add.html.twig', array('form' => $form->createView(), 'active' => 2));
+			
+        }
+		
+		/*else {
+			$provincias = $this->obtenerSelectProvincias();	
+			$user = $this->container->get('fos_user.user_manager')->createUser();
+			$form = $this->createForm(new RegistrationFormType(), $user)->add('localidad', 'choice', array('choices' => $provincias));
+			//$form->get('localidad')->setData($provincias);
+			return $this->render('ZombitOteaBundle:User:add.html.twig', array('form' => $form->createView(), 'active' => 2));
+		}*/		
 		
 		$route = 'zombit_otea_userspage';
 		$url = $this->generateUrl($route);
@@ -131,6 +144,7 @@ class UserController extends Controller
 			foreach($localidades as $localidad)
 				$lista[$provincia['name']][$localidad['id']] = $localidad['name'];
 				
+			break; // TODO quitar el break para que cargue todas las provincias, o generar la carga dinámica.
 		}
 		
 		return $lista;

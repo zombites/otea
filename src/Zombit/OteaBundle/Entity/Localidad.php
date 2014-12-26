@@ -3,6 +3,7 @@
 namespace Zombit\OteaBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Localidad

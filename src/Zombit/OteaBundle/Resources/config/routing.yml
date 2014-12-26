@@ -1,3 +1,11 @@
+zombit_otea_localidad:
+    resource: "@ZombitOteaBundle/Resources/config/routing/localidad.yml"
+    prefix:   /localidad
+
+zombit_otea_provincia:
+    resource: "@ZombitOteaBundle/Resources/config/routing/provincia.yml"
+    prefix:   /provincia
+
 zombit_otea_homepage:
     path:     /
     defaults: { _controller: FOSUserBundle:Security:login }
