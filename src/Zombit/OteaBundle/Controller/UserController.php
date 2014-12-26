@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 use Zombit\OteaBundle\Entity\User;
 use Zombit\OteaBundle\Form\UserType;
+use Zombit\OteaBundle\Form\Type\RegistrationFormType;
 
 /**
  * User controller.
@@ -40,6 +41,7 @@ class UserController extends Controller
         $form->handleRequest($request);
 
         if ($form->isValid()) {
+        	$entity->setEnabled(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
@@ -48,7 +50,7 @@ class UserController extends Controller
         }
 
         return $this->render('ZombitOteaBundle:User:new.html.twig', array(
-            'entity' => $entity,
+            'user' => $entity,
             'form'   => $form->createView(),
         ));
     }
@@ -62,7 +64,8 @@ class UserController extends Controller
      */
     private function createCreateForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        //$form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new RegistrationFormType(), $entity, array(
             'action' => $this->generateUrl('users_create'),
             'method' => 'POST',
         ));

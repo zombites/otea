@@ -11,7 +11,7 @@ class RegistrationFormType extends AbstractType
     {
         // add your custom field
         $builder->add('name');
-		$builder->add('gender');
+		$builder->add('gender', 'choice', array( 'choices'   => array( 'm' => 'Mujer', 'h' => 'Hombre' ), 'expanded' => 'true' ));
     }
 
     public function getParent()

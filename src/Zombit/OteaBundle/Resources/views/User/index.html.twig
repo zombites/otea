@@ -25,7 +25,7 @@
     		<td>{% if not user.enabled %}<span class="glyphicon glyphicon-ban-circle text-muted" data-toggle="tooltip" data-placement="right" data-container="body" title="No activo"></span>{% endif %}</td>
         	<td>{{ user.name | e }}</td>
         	<td>{{ user.email }}</td>
-        	<td>{{ user.lastlogin | date }}</td>
+        	<td>{{ user.lastlogin ? user.lastlogin | date }}</td>
         	<td>
         		{# <!--a href="{{ path( 'zombit_otea_edituserpage', { 'username': user.username }) }}" data-toggle="confirmation" data-title="¿Convertir en Admin?" data-placement="right" data-singleton="true" data-btn-ok-label="Sí" data-btn-ok-class="btn-danger" data-btn-cancel-class="btn-primary"><button class="btn btn-warning btn-xs"><span class="glyphicon glyphicon-asterisk"></span></button></a--> #}
         		<a href="{{ path('users_edit', { 'id': user.id }) }}"><button class="btn btn-primary btn-xs" data-toggle="tooltip" title="Editar usuaria/o"><span class="glyphicon glyphicon-pencil"></span></button></a>
