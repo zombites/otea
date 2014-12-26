@@ -26,7 +26,7 @@ class UserController extends Controller
         $entities = $em->getRepository('ZombitOteaBundle:User')->findAll();
 
         return $this->render('ZombitOteaBundle:User:index.html.twig', array(
-            'entities' => $entities,
+            'users' => $entities,
         ));
     }
     /**
