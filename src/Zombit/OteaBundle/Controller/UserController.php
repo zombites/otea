@@ -130,8 +130,8 @@ class UserController extends Controller
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('ZombitOteaBundle:User:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'user'      => $entity,
+            'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -145,7 +145,7 @@ class UserController extends Controller
     */
     private function createEditForm(User $entity)
     {
-        $form = $this->createForm(new UserType(), $entity, array(
+        $form = $this->createForm(new RegistrationFormType(), $entity, array(
             'action' => $this->generateUrl('users_update', array('id' => $entity->getId())),
             'method' => 'PUT',
         ));

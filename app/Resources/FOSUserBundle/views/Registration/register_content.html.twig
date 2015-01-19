@@ -1,0 +1,55 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+{{ form_start(form, { 'attr' : { 'class' : 'form-signin', 'role' : 'form' } }) }}
+	<h2 class="form-signin-heading">Registro</h2>
+	
+	
+	<div class="form-group">
+	    {{ form_label(form.name) }}
+		{{ form_widget(form.name, { 'attr': {'class': 'form-control', 'placeholder': 'Nombre completo'} }) }}     
+	    {{ form_errors(form.name) }}   
+	</div>
+	
+	<div class="form-group">
+	    {{ form_label(form.username) }}
+		{{ form_widget(form.username, { 'attr': {'class': 'form-control', 'placeholder': 'Nombre de usuaria/o'} }) }}     
+	    {{ form_errors(form.username) }}   
+	</div>
+	
+	<div class="form-group">
+	    {{ form_label(form.email) }}
+		{{ form_widget(form.email, { 'attr': {'class': 'form-control', 'placeholder': 'Correo electrónico'} }) }}     
+	    {{ form_errors(form.email) }}   
+	</div>
+	
+	{% for passwordField in form.plainPassword %}
+	
+	<div class="form-group">
+	    {{ form_label(passwordField) }}
+		{{ form_widget(passwordField, { 'attr': {'class': 'form-control', 'placeholder': 'Contraseña'} }) }}     
+	    {{ form_errors(passwordField) }}   
+	</div>
+	
+	{% endfor %}
+	
+	<div class="form-group">
+		{{ form_widget(form.gender, { 'attr': {'class': 'form-control text-center'} }) }}     
+	    {{ form_errors(form.gender) }}   
+	</div>
+	
+	<div class="col-sm-12">
+		<button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" >Aceptar</button>
+	</div>
+
+{{ form_errors(form) }}
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{#
+<form action="{{ path('fos_user_registration_register') }}" {{ form_enctype(form) }} method="POST" class="fos_user_registration_register">
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+</form>
+#}
