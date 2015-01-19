@@ -1,6 +1,6 @@
 {% trans_default_domain 'FOSUserBundle' %}
 
-{{ form_start(form, { 'attr' : { 'class' : 'form-signin', 'role' : 'form' } }) }}
+{{ form_start(form, { 'attr' : { 'class' : 'form-signup', 'role' : 'form' } }) }}
 	<h2 class="form-signin-heading">Registro</h2>
 	
 	
@@ -37,9 +37,7 @@
 	    {{ form_errors(form.gender) }}   
 	</div>
 	
-	<div class="col-sm-12">
-		<button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" >Aceptar</button>
-	</div>
+	<button class="btn btn-lg btn-primary btn-block" type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" >Aceptar</button>
 
 {{ form_errors(form) }}
 {{ form_rest(form) }}
